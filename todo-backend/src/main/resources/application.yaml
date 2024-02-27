@@ -17,6 +17,8 @@ spring:
 
 messages:
   exceptions:
+    user-details:
+      not-found: "User not exists by username or email"
     todo:
       not-found: "Todo not found, with id: "
   controllers:
