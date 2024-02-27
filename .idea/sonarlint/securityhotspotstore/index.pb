@@ -41,3 +41,15 @@ Ztodo-backend/src/main/java/com/pblgllgs/todobackend/security/CustomUserDetailsS
 Rtodo-backend/src/main/java/com/pblgllgs/todobackend/utils/PasswordEncoderImpl.java,b\0\b02622076982a17aab7148d23e587c9b33f6103a
 
 Otodo-backend/src/main/java/com/pblgllgs/todobackend/TodoBackendApplication.java,8\a\8a79e5c763f8f3723deaa3934092ef83257a01c4
+x
+Htodo-backend/src/main/java/com/pblgllgs/todobackend/dto/RegisterDto.java,a\b\abdb6ea4a038668fcce82014ddb93a8f20426838
+ƒ
+Stodo-backend/src/main/java/com/pblgllgs/todobackend/exception/TodoApiException.java,b\2\b23af94d74bc3f0d3ee535a501580fd15ef3bf7a
+|
+Ltodo-backend/src/main/java/com/pblgllgs/todobackend/service/AuthService.java,9\3\930b62812f06b73a7795d4bd4db923006cf95a4b
+…
+Utodo-backend/src/main/java/com/pblgllgs/todobackend/service/impl/AuthServiceImpl.java,a\f\afacbe063a287726224788d227d13f800af496a5
+‚
+Rtodo-backend/src/main/java/com/pblgllgs/todobackend/controller/AuthController.java,8\c\8c14f2679c607a7544b4a8753a57a7f495c179ba
+u
+Etodo-backend/src/main/java/com/pblgllgs/todobackend/dto/LoginDto.java,0\8\08292213661d69cb1b4bd49da2192d017e9511ea

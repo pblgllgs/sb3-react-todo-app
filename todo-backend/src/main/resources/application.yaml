@@ -19,8 +19,14 @@ messages:
   exceptions:
     user-details:
       not-found: "User not exists by username or email"
+      username-already-exists: "Username already exist"
+      email-already-exists: "Email already exist"
     todo:
       not-found: "Todo not found, with id: "
   controllers:
     todo:
       deleted-success: "Todo deleted successfully, with id: "
+  services:
+    user-details:
+      create-success: "User successfully created"
+      login-success: "User successfully login"

@@ -26,5 +26,20 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ErrorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(TodoApiException.class)
+    public ResponseEntity<ErrorResponse> handleException(
+            TodoApiException e,
+            HttpServletRequest request
+    ) {
+        ErrorResponse ErrorResponse = new ErrorResponse(
+                request.getRequestURI(),
+                e.getClass().getSimpleName(),
+                e.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(ErrorResponse, HttpStatus.BAD_REQUEST);
+    }
+
 
 }
