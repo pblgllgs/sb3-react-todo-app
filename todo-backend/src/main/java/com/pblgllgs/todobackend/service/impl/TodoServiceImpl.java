@@ -60,7 +60,7 @@ public class TodoServiceImpl implements ITodoService {
                 );
         todo.setTitle(todoDto.title());
         todo.setDescription(todoDto.description());
-        todo.setCompleted(todo.isCompleted());
+        todo.setCompleted(todoDto.completed());
         Todo todoUpdated = todoRepository.save(todo);
         return TodoMapper.todoToTodoDto(todoUpdated);
     }
@@ -83,6 +83,30 @@ public class TodoServiceImpl implements ITodoService {
                         () -> new ResourceNotFoundException(messageTodoNotFound + todoId)
                 );
         todo.setCompleted(!todo.isCompleted());
+        Todo todoCompleted = todoRepository.save(todo);
+        return TodoMapper.todoToTodoDto(todoCompleted);
+    }
+
+    @Override
+    public TodoDto changeStatusComplete(Long todoId) {
+        Todo todo = todoRepository
+                .findById(todoId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(messageTodoNotFound + todoId)
+                );
+        todo.setCompleted(true);
+        Todo todoCompleted = todoRepository.save(todo);
+        return TodoMapper.todoToTodoDto(todoCompleted);
+    }
+
+    @Override
+    public TodoDto changeStatusIncomplete(Long todoId) {
+        Todo todo = todoRepository
+                .findById(todoId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(messageTodoNotFound + todoId)
+                );
+        todo.setCompleted(false);
         Todo todoCompleted = todoRepository.save(todo);
         return TodoMapper.todoToTodoDto(todoCompleted);
     }

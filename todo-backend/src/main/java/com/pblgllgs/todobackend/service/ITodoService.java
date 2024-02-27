@@ -22,4 +22,8 @@ public interface ITodoService {
     void deleteTodo(Long todoId);
 
     TodoDto changeStatus(Long todoId);
+
+    TodoDto changeStatusComplete(Long todoId);
+
+    TodoDto changeStatusIncomplete(Long todoId);
 }

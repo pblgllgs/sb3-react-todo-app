@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/1.0/todos")
+@CrossOrigin("*")
 public class TodoController {
     @Value("${messages.controllers.todo.deleted-success}")
     private String messageDeletedSuccessfully;
@@ -54,6 +55,16 @@ public class TodoController {
     @PatchMapping("/{todoId}/complete-incomplete")
     public ResponseEntity<TodoDto> changeStatus(@PathVariable("todoId") Long todoId) {
         return new ResponseEntity<>(iTodoService.changeStatus(todoId), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{todoId}/complete")
+    public ResponseEntity<TodoDto> changeStatusComplete(@PathVariable("todoId") Long todoId) {
+        return new ResponseEntity<>(iTodoService.changeStatusComplete(todoId), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{todoId}/incomplete")
+    public ResponseEntity<TodoDto> changeStatusInComplete(@PathVariable("todoId") Long todoId) {
+        return new ResponseEntity<>(iTodoService.changeStatusIncomplete(todoId), HttpStatus.OK);
     }
 
 }
