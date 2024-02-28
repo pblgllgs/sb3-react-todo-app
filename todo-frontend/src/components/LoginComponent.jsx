@@ -21,10 +21,11 @@ const LoginComponent = () => {
     console.log("🚀 ~ handleRegistration ~ user:", user);
     await loginUser(user)
       .then((response) => {
-        console.log(response);
-        const token = "Basic " + window.btoa(usernameOrEmail + ":" + password);
+        console.log("🚀 ~ .then ~ response:", response.data);
+        const token = `${response.data.tokenType} ${response.data.accessToken}`;
         storeToken(token);
-        saveLoggedInUser(usernameOrEmail);
+        saveLoggedInUser(usernameOrEmail, response.data.role);
+        console.log("🚀 ~ .then ~ response.data.role:", response.data.role);
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -32,7 +33,6 @@ const LoginComponent = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        // window.location.reload(false);
       })
       .catch((err) => console.log(err));
     setUsernameOrEmail("");

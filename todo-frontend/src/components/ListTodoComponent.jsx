@@ -8,6 +8,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Check2Circle, PatchExclamation } from "react-bootstrap-icons";
 import Swal from "sweetalert2";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ListTodoComponent = () => {
   const [todos, setTodos] = useState([]);
@@ -28,6 +30,10 @@ const ListTodoComponent = () => {
 
   const handleUpdateTodo = (id) => {
     navigate(`/update-todo/${id}`);
+  };
+
+  const isAdmin = () => {
+    return sessionStorage.getItem("roleUser").trim().includes("ROLE_ADMIN")&& sessionStorage.getItem("roleUser").trim() != null ? true : false;
   };
 
   const handleDeleteTodo = (id) => {
@@ -56,14 +62,38 @@ const ListTodoComponent = () => {
 
   const handleCompleteTodo = (id) => {
     completeTodo(id)
-      .then(() => fetchData())
+      .then(() => {
+        fetchData();
+        toast.success("Success!", {
+          position: "bottom-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
       .catch((err) => console.log(err));
     navigate("/todos");
   };
 
   const handleInCompleteTodo = (id) => {
     inCompleteTodo(id)
-      .then(() => fetchData())
+      .then(() => {
+        fetchData();
+        toast.success("Success!", {
+          position: "bottom-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
       .catch((err) => console.log(err));
     navigate("/todos");
   };
@@ -71,6 +101,19 @@ const ListTodoComponent = () => {
   return (
     <>
       <div className="container">
+        <ToastContainer
+          position="bottom-right"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition:Bounce
+        />
         <h2 className="text-center">List of Todos</h2>
         <button className="btn btn-primary mb-2 mt-2" onClick={handleNewTodo}>
           Add Todo
@@ -99,18 +142,23 @@ const ListTodoComponent = () => {
                       )}
                     </td>
                     <td>
-                      <button
-                        className="btn btn-info m-1"
-                        onClick={() => handleUpdateTodo(todo.id)}
-                      >
-                        Update
-                      </button>
-                      <button
-                        className="btn btn-danger m-1"
-                        onClick={() => handleDeleteTodo(todo.id)}
-                      >
-                        Delete
-                      </button>
+                      {isAdmin() && (
+                        <>
+                          <button
+                            className="btn btn-info m-1"
+                            onClick={() => handleUpdateTodo(todo.id)}
+                          >
+                            Update
+                          </button>
+                          <button
+                            className="btn btn-danger m-1"
+                            onClick={() => handleDeleteTodo(todo.id)}
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+
                       <button
                         className={`btn btn-success m-1 ${
                           todo.completed ? "disabled" : ""

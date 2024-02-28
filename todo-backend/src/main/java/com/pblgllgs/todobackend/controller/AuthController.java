@@ -1,5 +1,6 @@
 package com.pblgllgs.todobackend.controller;
 
+import com.pblgllgs.todobackend.dto.JwtAuthResponse;
 import com.pblgllgs.todobackend.dto.LoginDto;
 import com.pblgllgs.todobackend.dto.RegisterDto;
 import com.pblgllgs.todobackend.service.AuthService;
@@ -30,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String,String>> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDto loginDto) {
         return new ResponseEntity<>(authService.login(loginDto), HttpStatus.OK);
     }
 }

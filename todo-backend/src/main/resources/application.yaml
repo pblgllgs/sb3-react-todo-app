@@ -30,3 +30,7 @@ messages:
     user-details:
       create-success: "User successfully created"
       login-success: "User successfully login"
+
+app:
+  jwt-secret: 311b59c459d4ba91302b213522290c694e5029ba055afc94760e5c89516b9c42
+  jwt-expiration-milliseconds: 60480000

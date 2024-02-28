@@ -6,6 +6,7 @@ package com.pblgllgs.todobackend.service.impl;
  *
  */
 
+import com.pblgllgs.todobackend.dto.JwtAuthResponse;
 import com.pblgllgs.todobackend.dto.LoginDto;
 import com.pblgllgs.todobackend.dto.RegisterDto;
 import com.pblgllgs.todobackend.entity.Role;
@@ -14,18 +15,18 @@ import com.pblgllgs.todobackend.exception.TodoApiException;
 import com.pblgllgs.todobackend.repository.RoleRepository;
 import com.pblgllgs.todobackend.repository.UserRepository;
 import com.pblgllgs.todobackend.service.AuthService;
+import com.pblgllgs.todobackend.utils.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +46,7 @@ public class AuthServiceImpl implements AuthService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public Map<String, String> register(RegisterDto registerDto) {
@@ -69,12 +71,26 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Map<String, String> login(LoginDto loginDto) {
+    public JwtAuthResponse login(LoginDto loginDto) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.usernameOrEmail(),
                 loginDto.password()
         ));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        return Map.of("message", messageUserSuccessfullyLogin);
+        Optional<User> byUsernameOrEmail = userRepository.findByUsernameOrEmail(
+                loginDto.usernameOrEmail(),
+                loginDto.usernameOrEmail()
+        );
+        String role = null;
+        if (byUsernameOrEmail.isPresent()) {
+            User loggedUser = byUsernameOrEmail.get();
+            Optional<Role> optionalRole = loggedUser.getRoles().stream().findFirst();
+            if (optionalRole.isPresent()) {
+                Role userRole = optionalRole.get();
+                role= userRole.getName();
+            }
+        }
+
+        return new JwtAuthResponse(jwtTokenProvider.generateJwt(authenticate), "Bearer",role);
     }
 }

@@ -1,5 +1,7 @@
 package com.pblgllgs.todobackend.security;
 
+import com.pblgllgs.todobackend.filter.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /*
  *
@@ -22,14 +25,11 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SpringSecurityConfig {
 
-    private final String baseUrl = "/api/1.0/**";
-    private UserDetailsService userDetailsService;
-
-    public SpringSecurityConfig(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -45,29 +45,12 @@ public class SpringSecurityConfig {
                                         .requestMatchers("/api/1.0/auth/**").permitAll()
                                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                                         .anyRequest().authenticated()
-//                                .requestMatchers(HttpMethod.POST,baseUrl).hasRole("ADMIN")
-//                                .requestMatchers(HttpMethod.PUT,baseUrl).hasRole("ADMIN")
-//                                .requestMatchers(HttpMethod.DELETE,baseUrl).hasRole("ADMIN")
-//                                .requestMatchers(HttpMethod.PATCH,baseUrl).hasAnyRole("ADMIN","USER")
-//                                .requestMatchers(HttpMethod.GET,baseUrl).hasAnyRole("ADMIN","USER")
                 ).httpBasic(Customizer.withDefaults())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .build();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails pbl = User.builder()
-//                .username("pbl")
-//                .password(passwordEncoder().encode("pass"))
-//                .roles("USER")
-//                .build();
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password(passwordEncoder().encode("pass"))
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(pbl, admin);
-//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
