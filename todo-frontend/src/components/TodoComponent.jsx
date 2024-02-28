@@ -19,47 +19,51 @@ const TodoComponent = () => {
     };
     try {
       if (id) {
-        updateTodo(id, todo);
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Todo updated successfully!!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        setTitle("");
-        setDescription("");
-        setCompleted(false);
-        navigate("/todos");
+        updateTodo(id, todo).then((response) => {
+          console.log("🚀 ~ saveTodo ~ response:", response);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Todo updated successfully!!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setTitle("");
+          setDescription("");
+          setCompleted(false);
+          navigate("/todos");
+        }).catch((err) => console.log(err));
       } else {
-        createTodo(todo);
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Todo created successfully!!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        setTitle("");
-        setDescription("");
-        setCompleted(false);
-        navigate("/todos");
+        createTodo(todo).then((response) => {
+          console.log("🚀 ~ saveTodo ~ response:", response);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Todo created successfully!!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setTitle("");
+          setDescription("");
+          setCompleted(false);
+          navigate("/todos");
+        }).catch((err) => console.log(err));
       }
     } catch (error) {
-        console.log(error);
-        Swal.fire({
-          position: "top-end",
-          icon: "error",
-          title: "Error then try save the todo, see logs",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+      console.log(error);
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Error then try save the todo, see logs",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
-  const isActive= () => {
-    return id>0;
-  }
+  const isActive = () => {
+    return id > 0;
+  };
 
   const pageTitle = () => {
     if (id) {

@@ -4,17 +4,44 @@ import ListTodoComponent from "./components/ListTodoComponent";
 import TodoComponent from "./components/TodoComponent";
 import HeaderComponent from "./components/HeaderComponent.jsx";
 import FooterComponent from "./components/FooterComponent.jsx";
+import RegisterComponent from "./components/RegisterComponent.jsx";
+import LoginComponent from "./components/LoginComponent.jsx";
+import AuthenticateRoute from "./components/AuthenticateRouteComponent.jsx";
 
 function App() {
+
   return (
     <>
       <BrowserRouter>
         <HeaderComponent />
         <Routes>
-          <Route path="/add-todo" element={<TodoComponent />} />
-          <Route path="/update-todo/:id" element={<TodoComponent />} />
-          <Route path="/" element={<ListTodoComponent />} />
-          <Route path="/todos" element={<ListTodoComponent />} />
+          <Route path="/" element={<LoginComponent />} />
+          <Route path="/login" element={<LoginComponent />} />
+          <Route path="/register" element={<RegisterComponent />} />
+          <Route
+            path="/add-todo"
+            element={
+              <AuthenticateRoute>
+                <TodoComponent />
+              </AuthenticateRoute>
+            }
+          />
+          <Route
+            path="/update-todo/:id"
+            element={
+              <AuthenticateRoute>
+                <TodoComponent />
+              </AuthenticateRoute>
+            }
+          />
+          <Route
+            path="/todos"
+            element={
+              <AuthenticateRoute>
+                <ListTodoComponent />
+              </AuthenticateRoute>
+            }
+          />
         </Routes>
         <FooterComponent />
       </BrowserRouter>
